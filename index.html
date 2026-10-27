@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Water Gun Game</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            color: white;
+            text-align: center;
+            min-height: 100vh;
+            padding: 25px 12px;
+        }
+
+        .game-container {
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #ffd166;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #ddd;
+            margin-bottom: 25px;
+        }
+
+        .choices {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .choice-btn {
+            background: white;
+            color: #243b55;
+            padding: 18px 15px;
+            min-width: 105px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .choice-btn span {
+            display: block;
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin: 25px 0;
+        }
+
+        .score-box {
+            background: #ffffff;
+            color: #243b55;
+            border-radius: 12px;
+            padding: 15px;
+            width: 48%;
+        }
+
+        .score-box h3 {
+            font-size: 16px;
+        }
+
+        .score {
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        #result {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 20px 0 10px;
+            color: #ffd166;
+        }
+
+        #details {
+            color: #eee;
+            min-height: 24px;
+            margin-bottom: 20px;
+        }
+
+        .reset-btn {
+            background: #ff6b6b;
+            color: white;
+            padding: 12px 25px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            color: #ccc;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="game-container">
+        <h1>🐍 Snake Water Gun 🔫</h1>
+        <p class="subtitle">Choose your move and beat the computer!</p>
+
+        <div class="choices">
+            <button class="choice-btn" onclick="playGame('snake')">
+                <span>🐍</span>Snake
+            </button>
+
+            <button class="choice-btn" onclick="playGame('water')">
+                <span>💧</span>Water
+            </button>
+
+            <button class="choice-btn" onclick="playGame('gun')">
+                <span>🔫</span>Gun
+            </button>
+        </div>
+
+        <div class="score-board">
+            <div class="score-box">
+                <h3>👤 Your Score</h3>
+                <p class="score" id="userScore">0</p>
+            </div>
+
+            <div class="score-box">
+                <h3>💻 Computer Score</h3>
+                <p class="score" id="computerScore">0</p>
+            </div>
+        </div>
+
+        <h2 id="result">Let's Play!</h2>
+        <p id="details">Select Snake, Water, or Gun.</p>
+
+        <button class="reset-btn" onclick="resetGame()">
+            🔄 Play Again
+        </button>
+
+        <p class="footer">Made with HTML, CSS & JavaScript ❤️</p>
+    </div>
+
+    <script>
+        let userScore = 0;
+        let computerScore = 0;
+
+        function playGame(userChoice) {
+            const choices = ["snake", "water", "gun"];
+
+            const computerChoice =
+                choices[Math.floor(Math.random() * choices.length)];
+
+            let message = "";
+
+            if (userChoice === computerChoice) {
+                message = "It's a Draw! 🤝";
+            }
+            else if (
+                (userChoice === "snake" && computerChoice === "water") ||
+                (userChoice === "water" && computerChoice === "gun") ||
+                (userChoice === "gun" && computerChoice === "snake")
+            ) {
+                message = "You Win! 🎉";
+                userScore++;
+            }
+            else {
+                message = "Computer Wins! 💻";
+                computerScore++;
+            }
+
+            document.getElementById("result").textContent = message;
+
+            document.getElementById("details").textContent =
+                "You chose " + getEmoji(userChoice) + " " + capitalize(userChoice) +
+                " | Computer chose " + getEmoji(computerChoice) + " " +
+                capitalize(computerChoice);
+
+            document.getElementById("userScore").textContent = userScore;
+            document.getElementById("computerScore").textContent = computerScore;
+        }
+
+        function getEmoji(choice) {
+            if (choice === "snake") return "🐍";
+            if (choice === "water") return "💧";
+            return "🔫";
+        }
+
+        function capitalize(word) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }
+
+        function resetGame() {
+            userScore = 0;
+            computerScore = 0;
+
+            document.getElementById("userScore").textContent = 0;
+            document.getElementById("computerScore").textContent = 0;
+            document.getElementById("result").textContent = "Let's Play!";
+            document.getElementById("details").textContent =
+                "Select Snake, Water, or Gun.";
+        }
+    </script>
+
+</body>
+</html>
